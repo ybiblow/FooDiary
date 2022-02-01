@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "896631213617",
+    "firebase_url": "https://foodiary-9d602-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "foodiary-9d602",
+    "storage_bucket": "foodiary-9d602.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:896631213617:android:9cb7c5bc352820be664f10",
+        "android_client_info": {
+          "package_name": "dev.jacob_ba.foodiary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "896631213617-e9or2qv8jtpfu4c9vftfthob5uai0lln.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdA4STC_rWaMewjk96nRd_5YPbasdvTS4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "896631213617-e9or2qv8jtpfu4c9vftfthob5uai0lln.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

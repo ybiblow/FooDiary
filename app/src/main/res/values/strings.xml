@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">FooDiary</string>
+    <string name="title_home">Home</string>
+    <string name="title_restaurants">Restaurants</string>
+    <string name="title_dishes">Dishes</string>
+    <string name="add_restaurant_fragment">Add Restaurant Fragment</string>
+    <string name="add_dish_fragment">Add Dish Fragment</string>
+
+    <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
+    <string name="facebook_application_id" translatable="false">491066769412221</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fb491066769412221</string>
+
+</resources>
