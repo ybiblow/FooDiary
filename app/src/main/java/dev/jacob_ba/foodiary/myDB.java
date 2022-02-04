@@ -18,12 +18,12 @@ import dev.jacob_ba.foodiary.models.Dish;
 import dev.jacob_ba.foodiary.models.Restaurant;
 
 public class myDB {
+    private static myDB myDatabase;
     private FirebaseDatabase database;
     private DatabaseReference reference_users;
     private FirebaseUser current_user;
     private ArrayList<Restaurant> arrayList_restaurants;
     private ArrayList<Dish> arrayList_dishes;
-    private static myDB myDatabase;
     private String lastDishKey;
     private String lastRestaurantKey;
 
@@ -162,5 +162,13 @@ public class myDB {
             }
         });
         return lastRestaurantKey;
+    }
+
+    public Dish getDishById(int id) {
+        for (Dish dish : arrayList_dishes) {
+            if (dish.getId() == id)
+                return dish;
+        }
+        return null;
     }
 }
