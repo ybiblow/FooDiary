@@ -41,6 +41,7 @@
                 app:counterMaxLength="20">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textField_dish_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxLength="20" />

@@ -12,13 +12,16 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_restaurants"
-        android:name="dev.jacob_ba.foodiary.fragments.RestaurantsFragment"
-        android:label="@string/title_restaurants"
-        tools:layout="@layout/fragment_restaurants" >
+        android:id="@+id/navigation_restaurants_list"
+        android:name="dev.jacob_ba.foodiary.fragments.RestaurantsListFragment"
+        android:label="@string/title_restaurants_list"
+        tools:layout="@layout/fragment_restaurants_list" >
         <action
             android:id="@+id/action_navigation_restaurants_to_addRestaurantFragment"
             app:destination="@id/addRestaurantFragment" />
+        <action
+            android:id="@+id/action_navigation_restaurants_to_restaurantFragment"
+            app:destination="@id/restaurantFragment" />
     </fragment>
 
     <fragment
@@ -34,14 +37,32 @@
         android:id="@+id/addRestaurantFragment"
         android:name="dev.jacob_ba.foodiary.fragments.AddRestaurantFragment"
         android:label="Add Restaurant"
-        tools:layout="@layout/fragment_add_restaurant" >
+        tools:layout="@layout/add_restaurant_fragment" >
         <action
             android:id="@+id/action_addRestaurantFragment_to_navigation_restaurants"
-            app:destination="@id/navigation_restaurants" />
+            app:destination="@id/navigation_restaurants_list" />
     </fragment>
     <fragment
         android:id="@+id/addDishFragment"
         android:name="dev.jacob_ba.foodiary.fragments.AddDishFragment"
         android:label="fragment_add_dish"
-        tools:layout="@layout/fragment_add_dish" />
+        tools:layout="@layout/fragment_add_dish" >
+        <action
+            android:id="@+id/action_addDishFragment_to_navigation_dishes"
+            app:destination="@id/navigation_dishes" />
+    </fragment>
+    <fragment
+        android:id="@+id/restaurantFragment"
+        android:name="dev.jacob_ba.foodiary.fragments.RestaurantFragment"
+        android:label="fragment_restaurant"
+        tools:layout="@layout/fragment_restaurant" >
+        <argument
+            android:name="message"
+            app:argType="string"
+            android:defaultValue="default" />
+        <argument
+            android:name="number"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
 </navigation>

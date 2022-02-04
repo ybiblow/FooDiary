@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">FooDiary</string>
     <string name="title_home">Home</string>
-    <string name="title_restaurants">Restaurants</string>
+    <string name="title_restaurants_list">Restaurants</string>
     <string name="title_dishes">Dishes</string>
     <string name="add_restaurant_fragment">Add Restaurant Fragment</string>
     <string name="add_dish_fragment">Add Dish Fragment</string>

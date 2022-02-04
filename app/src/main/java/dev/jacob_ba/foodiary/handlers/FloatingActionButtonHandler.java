@@ -22,4 +22,5 @@ public class FloatingActionButtonHandler {
     public ExtendedFloatingActionButton getFab() {
         return fab;
     }
+
 }

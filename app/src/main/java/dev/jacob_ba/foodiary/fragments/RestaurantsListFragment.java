@@ -16,17 +16,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import dev.jacob_ba.foodiary.R;
 
 import dev.jacob_ba.foodiary.adapters.RestaurantAdapter;
-import dev.jacob_ba.foodiary.databinding.FragmentRestaurantsBinding;
+import dev.jacob_ba.foodiary.databinding.FragmentRestaurantsListBinding;
 import dev.jacob_ba.foodiary.myDB;
 
-public class RestaurantsFragment extends Fragment {
+public class RestaurantsListFragment extends Fragment {
 
-    private FragmentRestaurantsBinding binding;
+    private FragmentRestaurantsListBinding binding;
     private RecyclerView recyclerView_restaurants;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentRestaurantsBinding.inflate(inflater, container, false);
+        binding = FragmentRestaurantsListBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         recyclerView_restaurants = binding.getRoot().findViewById(R.id.restaurants_recyclerView);

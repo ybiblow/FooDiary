@@ -15,8 +15,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -33,6 +31,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import dev.jacob_ba.foodiary.databinding.ActivityMainBinding;
+import dev.jacob_ba.foodiary.fragments.RestaurantsListFragment;
+import dev.jacob_ba.foodiary.fragments.RestaurantsListFragmentDirections;
 import dev.jacob_ba.foodiary.handlers.FloatingActionButtonHandler;
 import dev.jacob_ba.foodiary.models.Dish;
 import dev.jacob_ba.foodiary.models.Restaurant;
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(R.id.navigation_home, R.id.navigation_restaurants, R.id.navigation_dishes).build();
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(R.id.navigation_home, R.id.navigation_restaurants_list, R.id.navigation_dishes).build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
@@ -118,14 +118,13 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.navigation_home:
                         floatingActionButton.hide();
                         break;
-                    case R.id.navigation_restaurants:
+                    case R.id.navigation_restaurants_list:
                         floatingActionButton.show();
                         floatingActionButton.shrink();
                         floatingActionButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                navController.navigate(R.id.action_navigation_restaurants_to_addRestaurantFragment);
-//                                binding.fab.hide();
+                                navController.navigate(R.id.addRestaurantFragment);
                             }
                         });
                         break;
@@ -136,7 +135,6 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View v) {
                                 navController.navigate(R.id.action_navigation_dishes_to_addDishFragment);
-//                                binding.fab.hide();
                             }
                         });
                         break;
