@@ -57,12 +57,8 @@
         android:label="fragment_restaurant"
         tools:layout="@layout/fragment_restaurant" >
         <argument
-            android:name="message"
-            app:argType="string"
-            android:defaultValue="default" />
-        <argument
-            android:name="number"
-            app:argType="integer"
-            android:defaultValue="-1" />
+            android:name="restaurant"
+            app:argType="dev.jacob_ba.foodiary.models.Restaurant"
+            app:nullable="true" />
     </fragment>
 </navigation>

@@ -1,8 +1,11 @@
 package dev.jacob_ba.foodiary.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 
-public class Restaurant {
+public class Restaurant implements Parcelable {
     public static int id_of_next_restaurant = 0;
     private int id;
     private String name;
@@ -24,6 +27,26 @@ public class Restaurant {
         this.id = id_of_next_restaurant;
         id_of_next_restaurant++;
     }
+
+    protected Restaurant(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        category = in.readString();
+        image_url = in.readString();
+        rank = in.readFloat();
+    }
+
+    public static final Creator<Restaurant> CREATOR = new Creator<Restaurant>() {
+        @Override
+        public Restaurant createFromParcel(Parcel in) {
+            return new Restaurant(in);
+        }
+
+        @Override
+        public Restaurant[] newArray(int size) {
+            return new Restaurant[size];
+        }
+    };
 
     public String getName() {
 
@@ -55,5 +78,19 @@ public class Restaurant {
 
     public int getId() {
         return id;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeString(category);
+        dest.writeString(image_url);
+        dest.writeFloat(rank);
     }
 }

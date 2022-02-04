@@ -80,10 +80,12 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 @Override
                 public void onClick(View v) {
                     NavController navController = Navigation.findNavController(fragment.requireActivity(), fragment.requireParentFragment().getId());
-                    RestaurantsListFragmentDirections.ActionNavigationRestaurantsToRestaurantFragment action = RestaurantsListFragmentDirections.actionNavigationRestaurantsToRestaurantFragment();
-                    action.setMessage(restaurant.getName());
-                    action.setNumber(restaurant.getId());
+                    RestaurantsListFragmentDirections.ActionNavigationRestaurantsToRestaurantFragment action = RestaurantsListFragmentDirections.actionNavigationRestaurantsToRestaurantFragment(restaurant);
+//                    action.setMessage(restaurant.getName());
+//                    action.setNumber(restaurant.getId());
                     navController.navigate(action);
+//                    RestaurantsListFragmentDirections.ActionNavigationRestaurantsToRestaurantFragment action = RestaurantsListFragmentDirections.actionNavigationRestaurantsToRestaurantFragment(restaurant);
+
                 }
             });
         }
