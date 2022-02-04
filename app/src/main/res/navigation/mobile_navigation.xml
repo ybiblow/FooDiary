@@ -37,7 +37,7 @@
         android:id="@+id/addRestaurantFragment"
         android:name="dev.jacob_ba.foodiary.fragments.AddRestaurantFragment"
         android:label="Add Restaurant"
-        tools:layout="@layout/add_restaurant_fragment" >
+        tools:layout="@layout/fragment_add_restaurant" >
         <action
             android:id="@+id/action_addRestaurantFragment_to_navigation_restaurants"
             app:destination="@id/navigation_restaurants_list" />

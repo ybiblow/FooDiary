@@ -26,14 +26,14 @@ import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textfield.TextInputEditText;
 
 import dev.jacob_ba.foodiary.R;
-import dev.jacob_ba.foodiary.databinding.AddRestaurantFragmentBinding;
+import dev.jacob_ba.foodiary.databinding.FragmentAddRestaurantBinding;
 import dev.jacob_ba.foodiary.handlers.FloatingActionButtonHandler;
 import dev.jacob_ba.foodiary.models.Restaurant;
 import dev.jacob_ba.foodiary.myDB;
 
 public class AddRestaurantFragment extends Fragment {
 
-    private AddRestaurantFragmentBinding binding;
+    private FragmentAddRestaurantBinding binding;
     private RatingBar ratingBar;
     private TextInputEditText restaurant_name;
     private TextInputEditText restaurant_category;
@@ -44,7 +44,7 @@ public class AddRestaurantFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = AddRestaurantFragmentBinding.inflate(inflater, container, false);
+        binding = FragmentAddRestaurantBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         setBinding();
         return root;
