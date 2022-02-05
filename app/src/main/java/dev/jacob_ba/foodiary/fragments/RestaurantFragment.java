@@ -92,7 +92,7 @@ public class RestaurantFragment extends Fragment {
                 .load(restaurant.getImage_url())
                 .placeholder(R.drawable.image_not_available)
                 .into(binding.fragmentRestaurantImage);
-        binding.fragmentRestaurantImage.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+//        binding.fragmentRestaurantImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
     }
 
     private void getRestaurant() {

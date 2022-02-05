@@ -58,6 +58,7 @@
             android:layout_below="@id/restaurant_category"
             android:layout_alignStart="@id/restaurant_category"
             android:layout_marginTop="40dp"
+            android:isIndicator="true"
             android:progressTint="@color/yellow_500"
             android:rating="3.5"
             android:secondaryProgressTint="@color/amber_500"

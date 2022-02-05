@@ -44,6 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@id/dish_name"
             android:layout_marginTop="40dp"
+            android:isIndicator="true"
             android:progressTint="@color/yellow_500"
             android:rating="3.5"
             android:secondaryProgressTint="@color/amber_500"
