@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -37,6 +38,7 @@ public class RestaurantFragment extends Fragment {
     private RatingBar restaurant_rating_bar;
     private Restaurant restaurant;
     private RecyclerView restaurant_recyclerView;
+    private ArrayList<Dish> arrayList_dishes;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -67,7 +69,7 @@ public class RestaurantFragment extends Fragment {
     }
 
     private void getDishes() {
-        ArrayList<Dish> arrayList_dishes = new ArrayList<Dish>();
+        arrayList_dishes = new ArrayList<Dish>();
         for (int id : restaurant.getArrayList_dishes_id()) {
             Dish dish = myDB.getInstance().getDishById(id);
             if (dish != null) {
@@ -90,6 +92,7 @@ public class RestaurantFragment extends Fragment {
                 .load(restaurant.getImage_url())
                 .placeholder(R.drawable.image_not_available)
                 .into(binding.fragmentRestaurantImage);
+        binding.fragmentRestaurantImage.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
     }
 
     private void getRestaurant() {
@@ -98,7 +101,7 @@ public class RestaurantFragment extends Fragment {
     }
 
     private void showRecycler() {
-        DishAdapter dishAdapter = new DishAdapter(this, myDB.getInstance().getArrayList_dishes());
+        DishAdapter dishAdapter = new DishAdapter(this, arrayList_dishes);
         restaurant_recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         restaurant_recyclerView.setItemAnimator(new DefaultItemAnimator());
         restaurant_recyclerView.setAdapter(dishAdapter);
