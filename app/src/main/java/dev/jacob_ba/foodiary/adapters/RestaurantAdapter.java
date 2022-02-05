@@ -67,7 +67,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         private MaterialTextView restaurant_name;
         private MaterialTextView restaurant_category;
         private AppCompatRatingBar restaurant_rating;
-        Restaurant restaurant;
+        private Restaurant restaurant;
 
         public RestaurantViewHolder(@NonNull View itemView) {
 

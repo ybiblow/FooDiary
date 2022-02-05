@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatRatingBar;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -16,6 +18,8 @@ import com.google.android.material.textview.MaterialTextView;
 import java.util.ArrayList;
 
 import dev.jacob_ba.foodiary.R;
+import dev.jacob_ba.foodiary.fragments.DishesListFragmentDirections;
+import dev.jacob_ba.foodiary.fragments.RestaurantsListFragmentDirections;
 import dev.jacob_ba.foodiary.models.Dish;
 
 public class DishAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -39,6 +43,7 @@ public class DishAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         DishViewHolder dishViewHolder = (DishViewHolder) holder;
         Dish dish = getItem(position);
+        dishViewHolder.dish=dish;
         dishViewHolder.dish_name.setText(dish.getName());
         dishViewHolder.dish_rating.setRating(dish.getRank());
         Glide.with(fragment).load(dish.getImage_url()).into(dishViewHolder.dish_image);
@@ -59,12 +64,21 @@ public class DishAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         private AppCompatImageView dish_image;
         private MaterialTextView dish_name;
         private AppCompatRatingBar dish_rating;
+        private Dish dish;
 
         public DishViewHolder(@NonNull View itemView) {
             super(itemView);
             dish_image = itemView.findViewById(R.id.dish_image);
             dish_name = itemView.findViewById(R.id.dish_name);
             dish_rating = itemView.findViewById(R.id.dish_rating);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    NavController navController = Navigation.findNavController(fragment.requireActivity(), fragment.requireParentFragment().getId());
+                    DishesListFragmentDirections.ActionNavigationDishesToDishFragment action = DishesListFragmentDirections.actionNavigationDishesToDishFragment(dish);
+                    navController.navigate(action);
+                }
+            });
         }
     }
 }

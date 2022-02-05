@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -24,7 +23,6 @@ import java.util.ArrayList;
 
 import dev.jacob_ba.foodiary.R;
 import dev.jacob_ba.foodiary.adapters.DishAdapter;
-import dev.jacob_ba.foodiary.adapters.RestaurantAdapter;
 import dev.jacob_ba.foodiary.databinding.FragmentRestaurantBinding;
 import dev.jacob_ba.foodiary.models.Dish;
 import dev.jacob_ba.foodiary.models.Restaurant;
