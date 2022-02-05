@@ -26,7 +26,7 @@
 
     <fragment
         android:id="@+id/navigation_dishes"
-        android:name="dev.jacob_ba.foodiary.fragments.DishesFragment"
+        android:name="dev.jacob_ba.foodiary.fragments.DishesListFragment"
         android:label="@string/title_dishes"
         tools:layout="@layout/fragment_dishes" >
         <action

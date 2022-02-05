@@ -20,7 +20,7 @@ import dev.jacob_ba.foodiary.models.Dish;
 import dev.jacob_ba.foodiary.myDB;
 
 
-public class DishesFragment extends Fragment {
+public class DishesListFragment extends Fragment {
     private FragmentDishesBinding binding;
     private RecyclerView recyclerView_dishes;
 
