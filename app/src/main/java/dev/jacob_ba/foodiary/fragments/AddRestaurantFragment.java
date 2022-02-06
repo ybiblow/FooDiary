@@ -1,7 +1,14 @@
 package dev.jacob_ba.foodiary.fragments;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.widget.AppCompatSeekBar;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,9 +28,16 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.util.UUID;
 
 import dev.jacob_ba.foodiary.R;
 import dev.jacob_ba.foodiary.databinding.FragmentAddRestaurantBinding;
@@ -40,7 +54,21 @@ public class AddRestaurantFragment extends Fragment {
     private TextInputEditText restaurant_rating_input;
     private AppCompatSeekBar restaurant_rating_seekBar;
     private ShapeableImageView add_restaurant_image;
-
+    private Uri imageUri;
+    private String restaurant_image_url;
+    private ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        // There are no request codes
+                        Intent data = result.getData();
+                        imageUri = data.getData();
+                        add_restaurant_image.setImageURI(imageUri);
+                    }
+                }
+            });
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -133,8 +161,18 @@ public class AddRestaurantFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.i("info", "Working!!!");
+                choosePicture();
             }
         });
+    }
+
+    private void choosePicture() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        someActivityResultLauncher.launch(intent);
+
+
     }
 
     private void setFab() {
@@ -152,8 +190,35 @@ public class AddRestaurantFragment extends Fragment {
                     String category = restaurant_category.getText().toString();
                     String str_rating = restaurant_rating_input.getText().toString();
 
-                    Restaurant restaurant = new Restaurant(name, category, "https://img.traveltriangle.com/blog/wp-content/tr:w-700,h-400/uploads/2018/09/swiss-alps.jpg", Integer.parseInt(str_rating));
-                    myDB.getInstance().addRestaurantToDatabase(restaurant);
+
+                    FirebaseStorage storage = FirebaseStorage.getInstance();
+
+                    // Create a storage reference from our app
+                    StorageReference storageRef = storage.getReference();
+
+                    StorageReference storage_restaurants_image_ref = storageRef.child("Restaurant_Pictures/" + UUID.randomUUID().toString());
+                    storage_restaurants_image_ref.putFile(imageUri).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Handle unsuccessful uploads
+                            Toast.makeText(getContext(), "unable to upload image", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                            // ...
+                            Toast.makeText(getContext(), "Uploaded image", Toast.LENGTH_SHORT).show();
+                            storage_restaurants_image_ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    restaurant_image_url = uri.toString();
+                                    Restaurant restaurant = new Restaurant(name, category, restaurant_image_url, Integer.parseInt(str_rating));
+                                    myDB.getInstance().addRestaurantToDatabase(restaurant);
+                                }
+                            });
+                        }
+                    });
                     NavController navController = Navigation.findNavController(requireActivity(), requireParentFragment().getId());
                     navController.navigate(R.id.action_addRestaurantFragment_to_navigation_restaurants);
                 }
