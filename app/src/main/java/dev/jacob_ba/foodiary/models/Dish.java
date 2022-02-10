@@ -3,12 +3,15 @@ package dev.jacob_ba.foodiary.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+
 public class Dish implements Parcelable {
     public static int id_of_next_dish = 0;
     private int restaurantId;
     private int id;
     private String name;
     private float rank;
+    private ArrayList<String> attributes;
     private String image_url;
 
     public Dish() {
