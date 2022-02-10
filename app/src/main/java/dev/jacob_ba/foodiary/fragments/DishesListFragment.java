@@ -1,6 +1,7 @@
 package dev.jacob_ba.foodiary.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +18,15 @@ import dev.jacob_ba.foodiary.R;
 import dev.jacob_ba.foodiary.adapters.DishAdapter;
 import dev.jacob_ba.foodiary.databinding.FragmentDishesBinding;
 import dev.jacob_ba.foodiary.models.Dish;
+import dev.jacob_ba.foodiary.models.Restaurant;
 import dev.jacob_ba.foodiary.myDB;
 
 
 public class DishesListFragment extends Fragment {
     private FragmentDishesBinding binding;
     private RecyclerView recyclerView_dishes;
+    private String filter = "";
+    private ArrayList<Dish> dishes;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentDishesBinding.inflate(inflater, container, false);
@@ -30,6 +34,14 @@ public class DishesListFragment extends Fragment {
 
         recyclerView_dishes = binding.getRoot().findViewById(R.id.dishes_recyclerView);
 
+        dishes = myDB.getInstance().getArrayList_dishes();
+        if (!getArguments().isEmpty()) {
+            RestaurantsListFragmentArgs args = RestaurantsListFragmentArgs.fromBundle(getArguments());
+            filter = args.getFilter();
+            if (!filter.equals("default"))
+                filterDishes();
+            Log.i("info", "filter passed");
+        }
         /*Dish egg_roll = new Dish("Egg Roll", "https://firebasestorage.googleapis.com/v0/b/foodiary-9d602.appspot.com/o/Dishes_Pictures%2FEgg_Roll.jpg?alt=media&token=5ebd4d91-1443-41c0-9b89-f9c5d9d6725c", 4.8f);
         Dish tori_ramen = new Dish("Tori Ramen", "https://firebasestorage.googleapis.com/v0/b/foodiary-9d602.appspot.com/o/Dishes_Pictures%2FTori_Ramen.jpg?alt=media&token=2649bce2-c03b-4861-8052-70d0444ea75e", 5.0f);
         Dish miso_soup = new Dish("Miso Soup", "https://firebasestorage.googleapis.com/v0/b/foodiary-9d602.appspot.com/o/Dishes_Pictures%2FMiso_Soup.jpg?alt=media&token=b66f096a-da58-4015-87e8-4c5ab088086a", 5.0f);
@@ -55,13 +67,29 @@ public class DishesListFragment extends Fragment {
         dishes.add(Thai_Corn_Soup);*/
 
 
-        DishAdapter dishAdapter = new DishAdapter(this, myDB.getInstance().getArrayList_dishes());
+        DishAdapter dishAdapter = new DishAdapter(this, dishes);
         recyclerView_dishes.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView_dishes.setItemAnimator(new DefaultItemAnimator());
         recyclerView_dishes.setAdapter(dishAdapter);
 
 
         return root;
+    }
+
+    private void filterDishes() {
+        ArrayList<Dish> filtered_dishes = new ArrayList<>();
+        for (Dish dish : dishes) {
+            Log.i("info",""+dish.getAttributes());
+            if (dish.getAttributes() != null) {
+                for (String str : dish.getAttributes()) {
+                    if (str.equals(filter)) {
+                        filtered_dishes.add(dish);
+                        break;
+                    }
+                }
+            }
+        }
+        dishes = filtered_dishes;
     }
 
     @Override

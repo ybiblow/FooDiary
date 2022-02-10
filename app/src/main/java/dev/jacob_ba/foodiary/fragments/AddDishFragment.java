@@ -36,6 +36,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import dev.jacob_ba.foodiary.R;
@@ -129,7 +130,11 @@ public class AddDishFragment extends Fragment {
                                 @Override
                                 public void onSuccess(Uri uri) {
                                     dish_image_url = uri.toString();
-                                    Dish dish = new Dish(name, dish_image_url, Integer.parseInt(str_rating));
+                                    ArrayList<String> attributes = new ArrayList<>();
+                                    attributes.add("Spicy");
+                                    attributes.add("Vegan");
+                                    Dish dish = new Dish(name, dish_image_url, Integer.parseInt(str_rating), attributes);
+
                                     myDB.getInstance().addDishToDatabase(dish);
                                 }
                             });

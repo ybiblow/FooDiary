@@ -42,6 +42,13 @@
         <action
             android:id="@+id/action_navigation_dishes_to_dishFragment"
             app:destination="@id/dishFragment" />
+        <action
+            android:id="@+id/action_navigation_dishes_self"
+            app:destination="@id/navigation_dishes" />
+        <argument
+            android:name="filter"
+            app:argType="string"
+            android:defaultValue="default" />
     </fragment>
     <fragment
         android:id="@+id/addRestaurantFragment"

@@ -32,6 +32,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import dev.jacob_ba.foodiary.databinding.ActivityMainBinding;
+import dev.jacob_ba.foodiary.fragments.DishesListFragmentDirections;
 import dev.jacob_ba.foodiary.fragments.RestaurantsListFragment;
 import dev.jacob_ba.foodiary.fragments.RestaurantsListFragmentDirections;
 import dev.jacob_ba.foodiary.handlers.FloatingActionButtonHandler;
@@ -168,30 +169,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void filterDishesList(NavController navController, MenuItem item) {
+        DishesListFragmentDirections.ActionNavigationDishesSelf action = DishesListFragmentDirections.actionNavigationDishesSelf();
+        String item_in_menu = item.getTitle().toString();
+        switch (item_in_menu) {
+            case "Spicy":
+                action.setFilter("Spicy");
+                break;
+            case "Vegan":
+                action.setFilter("Vegan");
+                break;
+        }
+        navController.navigate(action);
     }
 
     private void filterRestaurantsList(NavController navController, @NonNull MenuItem item) {
-        RestaurantsListFragmentDirections.ActionNavigationRestaurantsListSelf action = null;
+        RestaurantsListFragmentDirections.ActionNavigationRestaurantsListSelf action = RestaurantsListFragmentDirections.actionNavigationRestaurantsListSelf();
         String item_in_menu = item.getTitle().toString();
         switch (item_in_menu) {
             case "Asian":
-                action = RestaurantsListFragmentDirections.actionNavigationRestaurantsListSelf();
                 action.setFilter("Asian");
                 break;
             case "Meat":
-                action = RestaurantsListFragmentDirections.actionNavigationRestaurantsListSelf();
                 action.setFilter("Meat");
                 break;
             case "Fish":
-                action = RestaurantsListFragmentDirections.actionNavigationRestaurantsListSelf();
                 action.setFilter("Fish");
                 break;
             case "Italian":
-                action = RestaurantsListFragmentDirections.actionNavigationRestaurantsListSelf();
                 action.setFilter("Italian");
-                break;
-            default:
-                action = RestaurantsListFragmentDirections.actionNavigationRestaurantsListSelf();
                 break;
         }
         navController.navigate(action);

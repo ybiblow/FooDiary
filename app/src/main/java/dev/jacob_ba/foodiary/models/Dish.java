@@ -18,11 +18,12 @@ public class Dish implements Parcelable {
         id_of_next_dish++;
     }
 
-    public Dish(String dish_name, String image_url, float dish_rank) {
+    public Dish(String dish_name, String image_url, float dish_rank, ArrayList<String> attributes) {
         this.name = dish_name;
         this.rank = dish_rank;
         this.image_url = image_url;
         this.id = id_of_next_dish;
+        this.attributes = attributes;
         id_of_next_dish++;
     }
 
@@ -68,6 +69,10 @@ public class Dish implements Parcelable {
 
     public int getRestaurantId() {
         return restaurantId;
+    }
+
+    public ArrayList<String> getAttributes() {
+        return attributes;
     }
 
     @Override
