@@ -1,7 +1,14 @@
 package dev.jacob_ba.foodiary.fragments;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatSeekBar;
@@ -20,9 +27,16 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.util.UUID;
 
 import dev.jacob_ba.foodiary.R;
 import dev.jacob_ba.foodiary.handlers.FloatingActionButtonHandler;
@@ -38,6 +52,21 @@ public class AddDishFragment extends Fragment {
     private RatingBar ratingBar;
     private AppCompatSeekBar dish_rating_seekBar;
     private TextInputEditText dish_rating_input;
+    private Uri imageUri;
+    private String dish_image_url;
+    private ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        // There are no request codes
+                        Intent data = result.getData();
+                        imageUri = data.getData();
+                        add_dish_image.setImageURI(imageUri);
+                    }
+                }
+            });
 
     public AddDishFragment() {
         // Required empty public constructor
@@ -75,14 +104,37 @@ public class AddDishFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("info", "im here");
+                Log.i("info", "========== All is good and the dish can be added ==========");
 
                 if (isDishToBeAdded()) {
                     String name = dish_name.getText().toString();
                     String str_rating = dish_rating_input.getText().toString();
 
-                    Dish dish = new Dish(name, "https://img.traveltriangle.com/blog/wp-content/tr:w-700,h-400/uploads/2018/09/swiss-alps.jpg", Integer.parseInt(str_rating));
-                    myDB.getInstance().addDishToDatabase(dish);
+                    FirebaseStorage storage = FirebaseStorage.getInstance();
+                    StorageReference storageRef = storage.getReference();
+                    StorageReference storage_dishes_image_ref = storageRef.child("Dishes_Pictures/" + UUID.randomUUID().toString());
+
+                    storage_dishes_image_ref.putFile(imageUri).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            //Handle unsuccessful upload
+                            Toast.makeText(getContext(), "unable to upload image", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            //Handle successful upload
+                            Toast.makeText(getContext(), "Uploaded image", Toast.LENGTH_SHORT).show();
+                            storage_dishes_image_ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    dish_image_url = uri.toString();
+                                    Dish dish = new Dish(name, dish_image_url, Integer.parseInt(str_rating));
+                                    myDB.getInstance().addDishToDatabase(dish);
+                                }
+                            });
+                        }
+                    });
                     NavController navController = Navigation.findNavController(requireActivity(), requireParentFragment().getId());
                     navController.navigate(R.id.action_addDishFragment_to_navigation_dishes);
                 }
@@ -165,8 +217,17 @@ public class AddDishFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.i("info", "Working!!!");
+                choosePicture();
             }
         });
+    }
+
+    private void choosePicture() {
+        Log.i("info", "Creating Intent for choosing a picture");
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        someActivityResultLauncher.launch(intent);
     }
 
     private void setDefaultImage() {

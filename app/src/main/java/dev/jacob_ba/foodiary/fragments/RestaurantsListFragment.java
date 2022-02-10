@@ -1,7 +1,11 @@
 package dev.jacob_ba.foodiary.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -13,16 +17,21 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import java.util.ArrayList;
+
 import dev.jacob_ba.foodiary.R;
 
 import dev.jacob_ba.foodiary.adapters.RestaurantAdapter;
 import dev.jacob_ba.foodiary.databinding.FragmentRestaurantsListBinding;
+import dev.jacob_ba.foodiary.models.Restaurant;
 import dev.jacob_ba.foodiary.myDB;
 
 public class RestaurantsListFragment extends Fragment {
 
     private FragmentRestaurantsListBinding binding;
     private RecyclerView recyclerView_restaurants;
+    private String filter = "";
+    private ArrayList<Restaurant> restaurants;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -30,6 +39,15 @@ public class RestaurantsListFragment extends Fragment {
         View root = binding.getRoot();
 
         recyclerView_restaurants = binding.getRoot().findViewById(R.id.restaurants_recyclerView);
+        restaurants = myDB.getInstance().getArrayList_restaurants();
+
+        if (!getArguments().isEmpty()) {
+            RestaurantsListFragmentArgs args = RestaurantsListFragmentArgs.fromBundle(getArguments());
+            filter = args.getFilter();
+            if(!filter.equals("default"))
+                filterRestaurants();
+            Log.i("info", "filter passed");
+        }
 
         /*Restaurant tori = new Restaurant("Tori", "Asian", "https://firebasestorage.googleapis.com/v0/b/foodiary-9d602.appspot.com/o/torii.png?alt=media&token=65a98e67-ceb8-479c-b04e-b098693caa89", 4.2f);
         Restaurant menTenTen = new Restaurant("MenTenTen", "Asian", "https://firebasestorage.googleapis.com/v0/b/foodiary-9d602.appspot.com/o/mententen.png?alt=media&token=c257e013-7a48-4059-886b-d21da3b39114", 4.7f);
@@ -54,12 +72,23 @@ public class RestaurantsListFragment extends Fragment {
         restaurants.add(kfc);
         restaurants.add(beni_hadayag);
         restaurants.add(joya);*/
+
         showRecycler();
+
         return root;
     }
 
+    private void filterRestaurants() {
+        ArrayList<Restaurant> filtered_restaurants = new ArrayList<>();
+        for (Restaurant restaurant : restaurants) {
+            if (restaurant.getCategory().equals(filter))
+                filtered_restaurants.add(restaurant);
+        }
+        restaurants = filtered_restaurants;
+    }
+
     private void showRecycler() {
-        RestaurantAdapter restaurantAdapter = new RestaurantAdapter(this, myDB.getInstance().getArrayList_restaurants());
+        RestaurantAdapter restaurantAdapter = new RestaurantAdapter(this, restaurants);
         recyclerView_restaurants.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView_restaurants.setItemAnimator(new DefaultItemAnimator());
         recyclerView_restaurants.setAdapter(restaurantAdapter);

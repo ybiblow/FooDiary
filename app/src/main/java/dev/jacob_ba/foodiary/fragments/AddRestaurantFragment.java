@@ -167,6 +167,7 @@ public class AddRestaurantFragment extends Fragment {
     }
 
     private void choosePicture() {
+        Log.i("info", "Creating Intent for choosing a picture");
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -197,17 +198,17 @@ public class AddRestaurantFragment extends Fragment {
                     StorageReference storageRef = storage.getReference();
 
                     StorageReference storage_restaurants_image_ref = storageRef.child("Restaurant_Pictures/" + UUID.randomUUID().toString());
+
                     storage_restaurants_image_ref.putFile(imageUri).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
-                            // Handle unsuccessful uploads
+                            //Handle unsuccessful uploads
                             Toast.makeText(getContext(), "unable to upload image", Toast.LENGTH_SHORT).show();
                         }
                     }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                            // ...
+                            //Handle successful upload
                             Toast.makeText(getContext(), "Uploaded image", Toast.LENGTH_SHORT).show();
                             storage_restaurants_image_ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override

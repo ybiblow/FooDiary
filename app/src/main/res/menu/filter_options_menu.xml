@@ -2,18 +2,52 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/filter"
         android:icon="@drawable/ic_baseline_filter_list_24"
-        android:title="TODO"
+        android:title="filter"
         app:showAsAction="always">
-        <menu xmlns:android="http://schemas.android.com/apk/res/android">
-            <group android:checkableBehavior="single">
+        <menu>
+            <group android:id="@+id/group_restaurants_list">
                 <item
-                    android:id="@+id/red"
-                    android:title="red" />
+                    android:id="@+id/asian"
+                    android:title="Asian"
+                    app:showAsAction="never" />
                 <item
-                    android:id="@+id/blue"
-                    android:title="blue" />
+                    android:id="@+id/meat"
+                    android:title="Meat"
+                    app:showAsAction="never" />
+                <item
+                    android:id="@+id/fish"
+                    android:title="Fish"
+                    app:showAsAction="never" />
+                <item
+                    android:id="@+id/italian"
+                    android:title="Italian"
+                    app:showAsAction="never" />
+            </group>
+            <group android:id="@+id/group_dishes_list">
+                <item
+                    android:id="@+id/spicy"
+                    android:title="Spicy"
+                    app:showAsAction="never" />
+                <item
+                    android:id="@+id/vegan"
+                    android:title="Vegan"
+                    app:showAsAction="never" />
             </group>
         </menu>
     </item>
+
 </menu>
+
+    <!--
+    <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/red"
+            android:title="red" />
+        <item
+            android:id="@+id/blue"
+            android:title="blue" />
+    </group>
+    </menu>-->

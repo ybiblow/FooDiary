@@ -1,5 +1,6 @@
 package dev.jacob_ba.foodiary;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,6 +40,7 @@ import dev.jacob_ba.foodiary.models.Restaurant;
 
 public class MainActivity extends AppCompatActivity {
 
+    private Activity a;
     private ActivityMainBinding binding;
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
             new FirebaseAuthUIActivityResultContract(),
@@ -114,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
         navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
             @Override
             public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
+                invalidateOptionsMenu();
                 switch (destination.getId()) {
                     case R.id.navigation_home:
                         floatingActionButton.hide();
@@ -146,15 +149,72 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
+        String lbl = navController.getCurrentDestination().getLabel().toString();
+        if (item.getTitle().toString().equals("filter")) {
+            return false;
+        }
+        switch (lbl) {
+            case "Restaurants List":
+                Log.i("info", "Filtering Restaurants List");
+                filterRestaurantsList(navController, item);
+                break;
+            case "Dishes List":
+                Log.i("info", "Filtering Dishes List");
+                filterDishesList(navController, item);
+                break;
+        }
         return super.onOptionsItemSelected(item);
+    }
 
+    private void filterDishesList(NavController navController, MenuItem item) {
+    }
+
+    private void filterRestaurantsList(NavController navController, @NonNull MenuItem item) {
+        RestaurantsListFragmentDirections.ActionNavigationRestaurantsListSelf action = null;
+        String item_in_menu = item.getTitle().toString();
+        switch (item_in_menu) {
+            case "Asian":
+                action = RestaurantsListFragmentDirections.actionNavigationRestaurantsListSelf();
+                action.setFilter("Asian");
+                break;
+            case "Meat":
+                action = RestaurantsListFragmentDirections.actionNavigationRestaurantsListSelf();
+                action.setFilter("Meat");
+                break;
+            case "Fish":
+                action = RestaurantsListFragmentDirections.actionNavigationRestaurantsListSelf();
+                action.setFilter("Fish");
+                break;
+            case "Italian":
+                action = RestaurantsListFragmentDirections.actionNavigationRestaurantsListSelf();
+                action.setFilter("Italian");
+                break;
+            default:
+                action = RestaurantsListFragmentDirections.actionNavigationRestaurantsListSelf();
+                break;
+        }
+        navController.navigate(action);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
+        String lbl = navController.getCurrentDestination().getLabel().toString();
         getMenuInflater().inflate(R.menu.filter_options_menu, menu);
 
+        if (lbl.equals("Restaurants List")) {
+            menu.findItem(R.id.filter).setVisible(true);
+            menu.findItem(R.id.filter).getSubMenu().setGroupVisible(R.id.group_restaurants_list, true);
+            menu.findItem(R.id.filter).getSubMenu().setGroupVisible(R.id.group_dishes_list, false);
+        } else if (lbl.equals("Dishes List")) {
+            menu.findItem(R.id.filter).setVisible(true);
+            menu.findItem(R.id.filter).getSubMenu().setGroupVisible(R.id.group_restaurants_list, false);
+            menu.findItem(R.id.filter).getSubMenu().setGroupVisible(R.id.group_dishes_list, true);
+        } else {
+            menu.findItem(R.id.filter).setVisible(false);
+        }
         return true;
     }
 }

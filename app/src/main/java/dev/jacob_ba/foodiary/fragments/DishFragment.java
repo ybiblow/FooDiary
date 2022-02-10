@@ -17,6 +17,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.android.material.imageview.ShapeableImageView;
 
+import java.util.ArrayList;
+
 import dev.jacob_ba.foodiary.R;
 import dev.jacob_ba.foodiary.databinding.FragmentDishBinding;
 import dev.jacob_ba.foodiary.models.Dish;
