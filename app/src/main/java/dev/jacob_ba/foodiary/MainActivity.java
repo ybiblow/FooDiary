@@ -152,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         String lbl = navController.getCurrentDestination().getLabel().toString();
+        Log.i("info", "ITEM = "+item.getTitle().toString());
         if (item.getTitle().toString().equals("filter")) {
             return false;
         }
@@ -211,14 +212,20 @@ public class MainActivity extends AppCompatActivity {
 
         if (lbl.equals("Restaurants List")) {
             menu.findItem(R.id.filter).setVisible(true);
+            menu.findItem(R.id.settings).setVisible(false);
             menu.findItem(R.id.filter).getSubMenu().setGroupVisible(R.id.group_restaurants_list, true);
             menu.findItem(R.id.filter).getSubMenu().setGroupVisible(R.id.group_dishes_list, false);
         } else if (lbl.equals("Dishes List")) {
             menu.findItem(R.id.filter).setVisible(true);
+            menu.findItem(R.id.settings).setVisible(false);
             menu.findItem(R.id.filter).getSubMenu().setGroupVisible(R.id.group_restaurants_list, false);
             menu.findItem(R.id.filter).getSubMenu().setGroupVisible(R.id.group_dishes_list, true);
+        } else if (lbl.equals("Home")) {
+            menu.findItem(R.id.filter).setVisible(false);
+            menu.findItem(R.id.settings).setVisible(true);
         } else {
             menu.findItem(R.id.filter).setVisible(false);
+            menu.findItem(R.id.settings).setVisible(false);
         }
         return true;
     }

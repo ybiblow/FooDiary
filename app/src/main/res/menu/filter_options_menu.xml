@@ -37,6 +37,13 @@
             </group>
         </menu>
     </item>
+    <item
+        android:id="@+id/settings"
+        android:icon="@drawable/ic_baseline_settings_24"
+        android:title="Settings"
+        app:showAsAction="always">
+
+    </item>
 
 </menu>
 
