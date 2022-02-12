@@ -9,7 +9,11 @@
         android:id="@+id/navigation_home"
         android:name="dev.jacob_ba.foodiary.fragments.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_restaurants_list"
@@ -88,4 +92,9 @@
             app:argType="dev.jacob_ba.foodiary.models.Dish"
             app:nullable="true" />
     </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="dev.jacob_ba.foodiary.fragments.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
 </navigation>

@@ -1,7 +1,8 @@
 package dev.jacob_ba.foodiary;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.util.Log;
-import android.view.Menu;
 
 import androidx.annotation.NonNull;
 
@@ -73,7 +74,7 @@ public class myDB {
         }
     }
 
-    public void loadDishes() {
+    public void loadDishes(Activity activity) {
         arrayList_dishes = new ArrayList<>();
         reference_users.child(current_user.getUid()).child("Dishes").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -92,6 +93,8 @@ public class myDB {
                 }
                 Log.i("info", "==============================Finished Printing Dishes==============================");
                 Log.i("info", "Number of Dishes: " + Dish.id_of_next_dish);
+                loadMainActivity(activity);
+
             }
 
             @Override
@@ -105,6 +108,12 @@ public class myDB {
             int int_last_dish_key = Integer.parseInt(string_last_dish_key) + 1;
             Dish.id_of_next_dish = int_last_dish_key;
         }
+    }
+
+    private void loadMainActivity(Activity activity) {
+        Intent intent = new Intent(activity, MainActivity.class);
+        activity.startActivity(intent);
+        activity.finish();
     }
 
     public void addRestaurantToDatabase(Restaurant restaurant) {
@@ -171,5 +180,9 @@ public class myDB {
                 return dish;
         }
         return null;
+    }
+
+    public FirebaseUser getCurrent_user() {
+        return current_user;
     }
 }

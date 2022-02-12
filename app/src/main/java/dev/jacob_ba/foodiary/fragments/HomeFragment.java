@@ -1,6 +1,5 @@
 package dev.jacob_ba.foodiary.fragments;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,30 +8,60 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.bumptech.glide.Glide;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import dev.jacob_ba.foodiary.R;
-import dev.jacob_ba.foodiary.databinding.ActivityMainBinding;
+import dev.jacob_ba.foodiary.adapters.DishAdapter;
+import dev.jacob_ba.foodiary.adapters.RestaurantAdapter;
 import dev.jacob_ba.foodiary.databinding.FragmentHomeBinding;
+import dev.jacob_ba.foodiary.myDB;
 
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
+    private TextView textView_name;
+    private CircleImageView circleImageView_home_image;
+    private RecyclerView recyclerView_Favorite_Restaurants;
+    private RecyclerView recyclerView_Favorite_Dishes;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        final TextView textView = binding.textHome;
-        initStuff();
-
+        bindViews();
         return root;
     }
 
-    private void initStuff() {
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        textView_name.setText(myDB.getInstance().getCurrent_user().getDisplayName());
+        if (myDB.getInstance().getCurrent_user().getPhotoUrl() != null) {
+            Log.i("info", "" + myDB.getInstance().getCurrent_user().getPhotoUrl().toString());
+        }
+        setDefaultImage();
+        showRecyclers();
+    }
+
+    private void showRecyclers() {
+        RestaurantAdapter restaurantAdapter = new RestaurantAdapter(this, myDB.getInstance().getArrayList_restaurants());
+        recyclerView_Favorite_Restaurants.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerView_Favorite_Restaurants.setItemAnimator(new DefaultItemAnimator());
+        recyclerView_Favorite_Restaurants.setAdapter(restaurantAdapter);
+
+        DishAdapter dishAdapter = new DishAdapter(this, myDB.getInstance().getArrayList_dishes());
+        recyclerView_Favorite_Dishes.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerView_Favorite_Dishes.setItemAnimator(new DefaultItemAnimator());
+        recyclerView_Favorite_Dishes.setAdapter(dishAdapter);
+    }
+
+    private void bindViews() {
         /*Restaurant tori = new Restaurant("Tori", "Asian", "https://firebasestorage.googleapis.com/v0/b/foodiary-9d602.appspot.com/o/torii.png?alt=media&token=65a98e67-ceb8-479c-b04e-b098693caa89", 4.2f);
         Restaurant menTenTen = new Restaurant("MenTenTen", "Asian", "https://firebasestorage.googleapis.com/v0/b/foodiary-9d602.appspot.com/o/mententen.png?alt=media&token=c257e013-7a48-4059-886b-d21da3b39114", 4.7f);
         Restaurant zozobra = new Restaurant("Zozobra", "Asian", "https://firebasestorage.googleapis.com/v0/b/foodiary-9d602.appspot.com/o/Zozobra.jpg?alt=media&token=3d089058-6f45-4f6a-9a9a-6c2b151c4619", 3.9f);
@@ -65,6 +94,25 @@ public class HomeFragment extends Fragment {
         myRef_restaurants.child(menTenTen.getName()).setValue(menTenTen);
         myRef_Dishes.child(egg_roll.getName()).setValue(egg_roll);
         myRef_Dishes.child(tori_ramen.getName()).setValue(tori_ramen);*/
+        textView_name = binding.textViewHomeName;
+        circleImageView_home_image = binding.circleImageViewHomeImage;
+        recyclerView_Favorite_Restaurants = binding.RecyclerViewHomeFavoriteRestaurants;
+        recyclerView_Favorite_Dishes = binding.RecyclerViewHomeFavoriteDishes;
+    }
+
+    private void setDefaultImage() {
+        String url;
+        if (myDB.getInstance().getCurrent_user().getPhotoUrl() != null) {
+            url = myDB.getInstance().getCurrent_user().getPhotoUrl().toString();
+            Glide.with(this)
+                    .load(url)
+                    .placeholder(R.drawable.image_not_available)
+                    .into(circleImageView_home_image);
+        } else {
+            Glide.with(this)
+                    .load(R.drawable.image_not_available)
+                    .into(circleImageView_home_image);
+        }
     }
 
     @Override

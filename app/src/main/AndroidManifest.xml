@@ -3,6 +3,7 @@
     package="dev.jacob_ba.foodiary">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,6 +13,9 @@
         android:theme="@style/Theme.FooDiary">
         <activity
             android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginScreen"
             android:exported="true"
             android:label="@string/app_name">
             <intent-filter>
@@ -21,7 +25,5 @@
             </intent-filter>
         </activity>
     </application>
-
-
 
 </manifest>

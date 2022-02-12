@@ -33,6 +33,7 @@ import java.util.List;
 
 import dev.jacob_ba.foodiary.databinding.ActivityMainBinding;
 import dev.jacob_ba.foodiary.fragments.DishesListFragmentDirections;
+import dev.jacob_ba.foodiary.fragments.HomeFragmentDirections;
 import dev.jacob_ba.foodiary.fragments.RestaurantsListFragment;
 import dev.jacob_ba.foodiary.fragments.RestaurantsListFragmentDirections;
 import dev.jacob_ba.foodiary.handlers.FloatingActionButtonHandler;
@@ -41,60 +42,8 @@ import dev.jacob_ba.foodiary.models.Restaurant;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Activity a;
     private ActivityMainBinding binding;
-    private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
-            new FirebaseAuthUIActivityResultContract(),
-            new ActivityResultCallback<FirebaseAuthUIAuthenticationResult>() {
-                @Override
-                public void onActivityResult(FirebaseAuthUIAuthenticationResult result) {
-                    onSignInResult(result);
-                }
-            }
-    );
 
-    public void createSignInIntent() {
-        // [START auth_fui_create_intent]
-        List<AuthUI.IdpConfig> providers = Arrays.asList(
-                new AuthUI.IdpConfig.EmailBuilder().build(),
-                new AuthUI.IdpConfig.PhoneBuilder().build(),
-                new AuthUI.IdpConfig.FacebookBuilder().build(),
-                new AuthUI.IdpConfig.GoogleBuilder().build());
-
-        // Create and launch sign-in intent
-        Intent signInIntent = AuthUI.getInstance()
-                .createSignInIntentBuilder()
-                .setAvailableProviders(providers).setLogo(R.drawable.logo)
-                .setIsSmartLockEnabled(false)
-                .setTheme(R.style.LoginTheme)
-                .build();
-        signInLauncher.launch(signInIntent);
-        // [END auth_fui_create_intent]
-    }
-
-    private void onSignInResult(FirebaseAuthUIAuthenticationResult result) {
-        IdpResponse response = result.getIdpResponse();
-        if (result.getResultCode() == RESULT_OK) {
-            // Successfully signed in
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            Log.i("info", "User ID: " + user.getUid());
-            Log.i("info", "User Display Name: " + user.getDisplayName().toString());
-
-            Log.i("info", "Number of Restaurants: " + Restaurant.id_of_next_restaurant);
-            Log.i("info", "Number of Dishes: " + Dish.id_of_next_dish);
-
-            myDB.getInstance().loadRestaurants();
-            myDB.getInstance().loadDishes();
-
-
-        } else {
-
-            // Sign in failed. If response is null the user canceled the
-            // sign-in flow using the back button. Otherwise check
-            // response.getError().getErrorCode() and handle the error.
-            // ...
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,14 +94,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        createSignInIntent();
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         String lbl = navController.getCurrentDestination().getLabel().toString();
-        Log.i("info", "ITEM = "+item.getTitle().toString());
         if (item.getTitle().toString().equals("filter")) {
             return false;
         }
@@ -165,8 +112,18 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("info", "Filtering Dishes List");
                 filterDishesList(navController, item);
                 break;
+            case "Home":
+                Log.i("info", "Home Settings");
+                homeSettings(navController, item);
+                break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void homeSettings(NavController navController, MenuItem item) {
+        if (item.getTitle().toString().equals("Settings")) {
+            navController.navigate(R.id.settingsFragment);
+        }
     }
 
     private void filterDishesList(NavController navController, MenuItem item) {
