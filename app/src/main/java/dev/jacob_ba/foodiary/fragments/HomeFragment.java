@@ -16,11 +16,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import dev.jacob_ba.foodiary.R;
 import dev.jacob_ba.foodiary.adapters.DishAdapter;
 import dev.jacob_ba.foodiary.adapters.RestaurantAdapter;
 import dev.jacob_ba.foodiary.databinding.FragmentHomeBinding;
+import dev.jacob_ba.foodiary.models.Dish;
+import dev.jacob_ba.foodiary.models.Restaurant;
 import dev.jacob_ba.foodiary.myDB;
 
 public class HomeFragment extends Fragment {
@@ -50,15 +56,59 @@ public class HomeFragment extends Fragment {
     }
 
     private void showRecyclers() {
-        RestaurantAdapter restaurantAdapter = new RestaurantAdapter(this, myDB.getInstance().getArrayList_restaurants());
+        ArrayList<Restaurant> restaurants = myDB.getInstance().getArrayList_restaurants();
+        ArrayList<Restaurant> top_5_Restaurants = new ArrayList<>();
+
+        ArrayList<Dish> dishes = myDB.getInstance().getArrayList_dishes();
+        ArrayList<Dish> top_5_Dishes = new ArrayList<>();
+        getTop5Restaurants(restaurants, top_5_Restaurants);
+        getTop5Dishes(dishes, top_5_Dishes);
+
+        RestaurantAdapter restaurantAdapter = new RestaurantAdapter(this, top_5_Restaurants);
         recyclerView_Favorite_Restaurants.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerView_Favorite_Restaurants.setItemAnimator(new DefaultItemAnimator());
         recyclerView_Favorite_Restaurants.setAdapter(restaurantAdapter);
 
-        DishAdapter dishAdapter = new DishAdapter(this, myDB.getInstance().getArrayList_dishes());
+        DishAdapter dishAdapter = new DishAdapter(this, top_5_Dishes);
         recyclerView_Favorite_Dishes.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerView_Favorite_Dishes.setItemAnimator(new DefaultItemAnimator());
         recyclerView_Favorite_Dishes.setAdapter(dishAdapter);
+    }
+
+    private void getTop5Dishes(ArrayList<Dish> dishes, ArrayList<Dish> top_5_dishes) {
+        Collections.sort(dishes, new Comparator<Dish>() {
+            @Override
+            public int compare(Dish o1, Dish o2) {
+                if (o1.getRank() > o2.getRank())
+                    return -1;
+                else if (o2.getRank() > o1.getRank())
+                    return 1;
+                else
+                    return 0;
+            }
+        });
+        for (int i = 0; i < dishes.size(); i++) {
+            if (i < 5)
+                top_5_dishes.add(dishes.get(i));
+        }
+    }
+
+    private void getTop5Restaurants(ArrayList<Restaurant> restaurants, ArrayList<Restaurant> top_5_restaurants) {
+        Collections.sort(restaurants, new Comparator<Restaurant>() {
+            @Override
+            public int compare(Restaurant o1, Restaurant o2) {
+                if (o1.getRank() > o2.getRank())
+                    return -1;
+                else if (o2.getRank() > o1.getRank())
+                    return 1;
+                else
+                    return 0;
+            }
+        });
+        for (int i = 0; i < restaurants.size(); i++) {
+            if (i < 5)
+                top_5_restaurants.add(restaurants.get(i));
+        }
     }
 
     private void bindViews() {
