@@ -35,14 +35,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:backgroundTint="@color/colorPrimary"
+        android:backgroundTint="@color/light_blue"
         android:contentDescription="Add"
         android:text="Add"
-        android:textColor="@color/amber_500"
+        android:textColor="@color/white"
         android:textSize="18dp"
         app:elevation="16dp"
         app:icon="@drawable/ic_add"
-        app:iconTint="@color/amber_500"
+        app:iconTint="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/nav_view"
         app:layout_constraintEnd_toEndOf="@+id/nav_view" />
 

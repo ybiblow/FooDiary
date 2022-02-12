@@ -104,8 +104,7 @@ public class AddRestaurantFragment extends Fragment {
 
     private void setDefaultImage() {
         Glide.with(this)
-                .load("https://img.traveltriangle.com/blog/wp-content/tr:w-700,h-400/uploads/2018/09/swiss-alps.jpg")
-                .placeholder(R.drawable.image_not_available)
+                .load(R.drawable.image_not_available)
                 .into(binding.addRestaurantImage);
     }
 
