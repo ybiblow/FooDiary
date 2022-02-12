@@ -15,6 +15,8 @@
     </style>
 
     <style name="LoginTheme" parent="FirebaseUI">
+        <item name="colorPrimary">#2C87A2</item>
+        <item name="colorPrimaryDark">#0C6985</item>
         <item name="android:windowBackground">@drawable/background</item>
     </style>
 
