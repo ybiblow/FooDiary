@@ -31,7 +31,7 @@
             android:id="@+id/restaurant_image"
             android:layout_width="120dp"
             android:layout_height="match_parent"
-            android:layout_alignBottom="@id/restaurant_rating"
+            android:layout_alignBottom="@id/linearLayout_Restaurant_Item_Rating"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:padding="4dp"
@@ -51,18 +51,34 @@
             android:text="RESTAURANT_NAME"
             android:textSize="16sp" />
 
-        <androidx.appcompat.widget.AppCompatRatingBar
-            android:id="@+id/restaurant_rating"
+        <LinearLayout
+            android:id="@+id/linearLayout_Restaurant_Item_Rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/restaurant_category"
             android:layout_alignStart="@id/restaurant_category"
-            android:layout_marginTop="40dp"
-            android:isIndicator="true"
-            android:progressTint="@color/yellow_500"
-            android:rating="3.5"
-            android:secondaryProgressTint="@color/amber_500"
-            tools:ignore="SpeakableTextPresentCheck" />
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatRatingBar
+                android:id="@+id/restaurant_ratingBar"
+                style="@style/Widget.AppCompat.RatingBar.Indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="true"
+                android:progressTint="@color/yellow_500"
+                android:rating="3.5"
+                android:secondaryProgressTint="@color/amber_500"
+                tools:ignore="SpeakableTextPresentCheck" />
+
+            <TextView
+                android:id="@+id/restaurant_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10/10" />
+        </LinearLayout>
+
     </RelativeLayout>
 
 

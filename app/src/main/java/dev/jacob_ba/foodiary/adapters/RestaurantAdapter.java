@@ -3,6 +3,7 @@ package dev.jacob_ba.foodiary.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -18,7 +19,6 @@ import com.google.android.material.textview.MaterialTextView;
 import java.util.ArrayList;
 
 import dev.jacob_ba.foodiary.R;
-import dev.jacob_ba.foodiary.fragments.RestaurantsListFragment;
 import dev.jacob_ba.foodiary.fragments.RestaurantsListFragmentDirections;
 import dev.jacob_ba.foodiary.models.Restaurant;
 
@@ -46,7 +46,8 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         restaurantViewHolder.setRestaurant(restaurant);
         restaurantViewHolder.restaurant_name.setText(restaurant.getName());
         restaurantViewHolder.restaurant_category.setText(restaurant.getCategory());
-        restaurantViewHolder.restaurant_rating.setRating(restaurant.getRank());
+        restaurantViewHolder.restaurant_ratingBar.setRating(restaurant.getRank());
+        restaurantViewHolder.restaurant_Rating.setText(restaurant.getRank() + "/10");
         Glide.with(fragment).load(restaurant.getImage_url()).into(restaurantViewHolder.restaurant_image);
 
 
@@ -66,7 +67,8 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         private AppCompatImageView restaurant_image;
         private MaterialTextView restaurant_name;
         private MaterialTextView restaurant_category;
-        private AppCompatRatingBar restaurant_rating;
+        private AppCompatRatingBar restaurant_ratingBar;
+        private TextView restaurant_Rating;
         private Restaurant restaurant;
 
         public RestaurantViewHolder(@NonNull View itemView) {
@@ -75,16 +77,14 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             restaurant_image = itemView.findViewById(R.id.restaurant_image);
             restaurant_name = itemView.findViewById(R.id.restaurant_name);
             restaurant_category = itemView.findViewById(R.id.restaurant_category);
-            restaurant_rating = itemView.findViewById(R.id.restaurant_rating);
+            restaurant_ratingBar = itemView.findViewById(R.id.restaurant_ratingBar);
+            restaurant_Rating = itemView.findViewById(R.id.restaurant_rating);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     NavController navController = Navigation.findNavController(fragment.requireActivity(), fragment.requireParentFragment().getId());
                     RestaurantsListFragmentDirections.ActionNavigationRestaurantsToRestaurantFragment action = RestaurantsListFragmentDirections.actionNavigationRestaurantsToRestaurantFragment(restaurant);
-//                    action.setMessage(restaurant.getName());
-//                    action.setNumber(restaurant.getId());
                     navController.navigate(action);
-//                    RestaurantsListFragmentDirections.ActionNavigationRestaurantsToRestaurantFragment action = RestaurantsListFragmentDirections.actionNavigationRestaurantsToRestaurantFragment(restaurant);
 
                 }
             });

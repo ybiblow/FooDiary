@@ -17,7 +17,7 @@
             android:id="@+id/dish_image"
             android:layout_width="120dp"
             android:layout_height="match_parent"
-            android:layout_alignBottom="@id/dish_rating"
+            android:layout_alignBottom="@id/linearLayout_Dish_Item_Rating"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:padding="4dp"
@@ -37,18 +37,32 @@
             android:text="RESTAURANT_NAME"
             android:textSize="16sp" />
 
-        <androidx.appcompat.widget.AppCompatRatingBar
-            android:id="@+id/dish_rating"
-            style="@style/Widget.AppCompat.RatingBar.Indicator"
+        <LinearLayout
+            android:id="@+id/linearLayout_Dish_Item_Rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@id/dish_name"
             android:layout_marginTop="40dp"
-            android:isIndicator="true"
-            android:progressTint="@color/yellow_500"
-            android:rating="3.5"
-            android:secondaryProgressTint="@color/amber_500"
-            tools:ignore="SpeakableTextPresentCheck" />
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatRatingBar
+                android:id="@+id/dish_ratingBar"
+                style="@style/Widget.AppCompat.RatingBar.Indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="true"
+                android:progressTint="@color/yellow_500"
+                android:rating="3.5"
+                android:secondaryProgressTint="@color/amber_500"
+                tools:ignore="SpeakableTextPresentCheck" />
+
+            <TextView
+                android:id="@+id/dish_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10/10" />
+        </LinearLayout>
     </RelativeLayout>
 
 
