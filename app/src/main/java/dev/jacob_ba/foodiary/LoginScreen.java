@@ -68,7 +68,7 @@ public class LoginScreen extends AppCompatActivity {
         // Create and launch sign-in intent
         Intent signInIntent = AuthUI.getInstance()
                 .createSignInIntentBuilder()
-                .setAvailableProviders(providers).setLogo(R.drawable.logo)
+                .setAvailableProviders(providers).setLogo(R.drawable.logo_white)
                 .setIsSmartLockEnabled(false)
                 .setTheme(R.style.LoginTheme)
                 .build();
