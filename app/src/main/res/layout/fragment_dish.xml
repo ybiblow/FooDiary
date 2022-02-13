@@ -52,7 +52,23 @@
                 android:rating="4"
                 android:secondaryProgressTint="@color/amber_500" />
 
+            <HorizontalScrollView
+                android:id="@+id/horizontalScrollView_Dish_Fragment_Chips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroup_Dish_Fragment_Attributes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:singleLine="true"
+                    app:singleSelection="true">
+
+                </com.google.android.material.chip.ChipGroup>
+            </HorizontalScrollView>
         </LinearLayout>
+
+
     </com.google.android.material.card.MaterialCardView>
 
 </RelativeLayout>

@@ -86,8 +86,7 @@ public class MainActivity extends AppCompatActivity {
                         floatingActionButton.shrink();
                         binding.fab.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onClick(View v) {
-                                navController.navigate(R.id.action_navigation_dishes_to_addDishFragment);
+                            public void onClick(View v) {navController.navigate(R.id.addDishFragment);
                             }
                         });
                         break;

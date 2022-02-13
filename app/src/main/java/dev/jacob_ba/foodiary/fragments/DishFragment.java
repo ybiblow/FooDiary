@@ -15,17 +15,21 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.ArrayList;
 
 import dev.jacob_ba.foodiary.R;
 import dev.jacob_ba.foodiary.databinding.FragmentDishBinding;
+import dev.jacob_ba.foodiary.handlers.FloatingActionButtonHandler;
 import dev.jacob_ba.foodiary.models.Dish;
 
 
 public class DishFragment extends Fragment {
     private FragmentDishBinding binding;
+    private ChipGroup chipGroup_Dish_Fragment_Attributes;
     private ShapeableImageView image;
     private TextView textView_dish_name;
     private RatingBar dish_ratingBar;
@@ -56,13 +60,26 @@ public class DishFragment extends Fragment {
                 .load(dish.getImage_url())
                 .placeholder(R.drawable.image_not_available)
                 .into(binding.fragmentDishImage);
+        setChipGroup();
 
+    }
+
+    private void setChipGroup() {
+        if (dish.getAttributes() == null)
+            return;
+        for (int i = 0; i < dish.getAttributes().size(); i++) {
+            Chip chip = (Chip) getLayoutInflater().inflate(R.layout.action_chip, chipGroup_Dish_Fragment_Attributes, false);
+            String str = dish.getAttributes().get(i);
+            chip.setText(str);
+            chipGroup_Dish_Fragment_Attributes.addView(chip);
+        }
     }
 
     private void bindViews() {
         image = binding.fragmentDishImage;
         textView_dish_name = binding.fragmentDishTextViewName;
         dish_ratingBar = binding.fragmentDishRatingBar;
+        chipGroup_Dish_Fragment_Attributes = binding.chipGroupDishFragmentAttributes;
     }
 
     @Override

@@ -88,4 +88,8 @@ public class Dish implements Parcelable {
         dest.writeFloat(rank);
         dest.writeString(image_url);
     }
+
+    public void setAttributes(ArrayList<String> attributes) {
+        this.attributes = attributes;
+    }
 }

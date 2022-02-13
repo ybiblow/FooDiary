@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.SeekBar;
 import android.widget.Toast;
@@ -29,6 +30,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textfield.TextInputEditText;
@@ -48,6 +51,9 @@ import dev.jacob_ba.foodiary.myDB;
 public class AddDishFragment extends Fragment {
 
     private FragmentAddDishBinding binding;
+    private ChipGroup chipGroup_Add_Attributes;
+    private Button button_Add_Attribute;
+    private TextInputEditText editText_Attribute_Name;
     private ShapeableImageView add_dish_image;
     private TextInputEditText dish_name;
     private RatingBar ratingBar;
@@ -69,10 +75,6 @@ public class AddDishFragment extends Fragment {
                 }
             });
 
-    public AddDishFragment() {
-        // Required empty public constructor
-    }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,7 +88,7 @@ public class AddDishFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentAddDishBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        setBinding();
+        bindViews();
         return root;
     }
 
@@ -96,6 +98,18 @@ public class AddDishFragment extends Fragment {
         setFab();
         setDefaultImage();
         setOnClicks();
+    }
+
+    private void bindViews() {
+        dish_name = binding.textFieldDishName;
+        dish_rating_input = binding.addDishRatingInput;
+        dish_rating_seekBar = binding.addDishSeekbar;
+        ratingBar = binding.addDishRatingBar;
+        add_dish_image = binding.addDishImage;
+        ratingBar.setRating(2.5f);
+        chipGroup_Add_Attributes = binding.chipGroupAttributes;
+        button_Add_Attribute = binding.buttonAddAttribute;
+        editText_Attribute_Name = binding.editTextAttributeName;
     }
 
     private void setFab() {
@@ -135,7 +149,7 @@ public class AddDishFragment extends Fragment {
                                     attributes.add("Spicy");
                                     attributes.add("Vegan");
                                     Dish dish = new Dish(name, dish_image_url, Integer.parseInt(str_rating), attributes);
-
+                                    setAttributes(dish);
                                     myDB.getInstance().addDishToDatabase(dish);
                                     NavController navController = Navigation.findNavController(requireActivity(), requireParentFragment().getId());
                                     navController.navigate(R.id.action_addDishFragment_to_navigation_dishes);
@@ -146,6 +160,17 @@ public class AddDishFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private void setAttributes(Dish dish) {
+        ArrayList<String> attributes = new ArrayList<>();
+        int chipGroupLength = chipGroup_Add_Attributes.getChildCount();
+        for (int i = 0; i < chipGroupLength; i++) {
+            Chip chip = (Chip) chipGroup_Add_Attributes.getChildAt(i);
+            attributes.add(chip.getText().toString());
+            Log.i("info", "Chip = " + chip.getText());
+        }
+        dish.setAttributes(attributes);
     }
 
     private void setViewsNotEnabled() {
@@ -170,15 +195,6 @@ public class AddDishFragment extends Fragment {
             return false;
         }
         return true;
-    }
-
-    private void setBinding() {
-        dish_name = binding.textFieldDishName;
-        dish_rating_input = binding.addDishRatingInput;
-        dish_rating_seekBar = binding.addDishSeekbar;
-        ratingBar = binding.addDishRatingBar;
-        add_dish_image = binding.addDishImage;
-        ratingBar.setRating(2.5f);
     }
 
     private void setOnClicks() {
@@ -234,6 +250,21 @@ public class AddDishFragment extends Fragment {
             public void onClick(View v) {
                 Log.i("info", "Working!!!");
                 choosePicture();
+            }
+        });
+        button_Add_Attribute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String str = editText_Attribute_Name.getText().toString();
+                if (str.isEmpty()) {
+                    Toast.makeText(getContext(), "Please Enter an Attribute", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                editText_Attribute_Name.setText("");
+                Chip chip = (Chip) getLayoutInflater().inflate(R.layout.custom_chip, chipGroup_Add_Attributes, false);
+                chip.setText(str);
+                chipGroup_Add_Attributes.addView(chip);
             }
         });
     }
