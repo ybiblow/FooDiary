@@ -111,6 +111,7 @@ public class AddDishFragment extends Fragment {
                     String name = dish_name.getText().toString();
                     String str_rating = dish_rating_input.getText().toString();
 
+                    setViewsNotEnabled();
                     FirebaseStorage storage = FirebaseStorage.getInstance();
                     StorageReference storageRef = storage.getReference();
                     StorageReference storage_dishes_image_ref = storageRef.child("Dishes_Pictures/" + UUID.randomUUID().toString());
@@ -136,15 +137,22 @@ public class AddDishFragment extends Fragment {
                                     Dish dish = new Dish(name, dish_image_url, Integer.parseInt(str_rating), attributes);
 
                                     myDB.getInstance().addDishToDatabase(dish);
+                                    NavController navController = Navigation.findNavController(requireActivity(), requireParentFragment().getId());
+                                    navController.navigate(R.id.action_addDishFragment_to_navigation_dishes);
                                 }
                             });
                         }
                     });
-                    NavController navController = Navigation.findNavController(requireActivity(), requireParentFragment().getId());
-                    navController.navigate(R.id.action_addDishFragment_to_navigation_dishes);
                 }
             }
         });
+    }
+
+    private void setViewsNotEnabled() {
+        dish_name.setEnabled(false);
+        dish_rating_seekBar.setEnabled(false);
+        dish_rating_input.setEnabled(false);
+        add_dish_image.setEnabled(false);
     }
 
     private boolean isDishToBeAdded() {
@@ -156,6 +164,9 @@ public class AddDishFragment extends Fragment {
             return false;
         } else if (name.isEmpty()) {
             Toast.makeText(getContext(), "Please Name The Dish!", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (imageUri == null) {
+            Toast.makeText(getContext(), "Please Pick an Image!", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
