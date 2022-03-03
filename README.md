@@ -1,7 +1,12 @@
 # FooDiary - Android App
-FooDiary is 
+FooDiary is... SHORT DESCRIPTION
 # Features
 
+ - Login via Facebook, Google and Email
+ - Edit personal info
+ - Add restaurants & dishes
+ - View & filter restaurants & dishes
+ - Store data in the cloud
 # Screenshots
 <p align="center">
 <img src="https://github.com/ybiblow/FooDiary/blob/master/Screenshots/LoginScreen_Screenshot.png?raw=true" width="350" height="746">
