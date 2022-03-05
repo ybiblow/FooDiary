@@ -1,7 +1,7 @@
 # FooDiary - Android App
 FooDiary is my final project in "Mobile App Development" course.
 This app will help you to remember your favorite restaurants & dishes so that it won't take you so long to choose a restaurant to dine in or a dish to eat.
-FooDiary was developed in Android Studio and uses Glide, Material Design and Firebase.
+FooDiary was developed using Android Studio and uses Glide, Material Design and Firebase.
 # Features
 
  - Login via Facebook, Google and Email
